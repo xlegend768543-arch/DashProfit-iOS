@@ -1,0 +1,584 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AA000101 /* DashProfitApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000101 /* DashProfitApp.swift */; };
+		AA000102 /* OfferModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000102 /* OfferModels.swift */; };
+		AA000104 /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000104 /* StorageService.swift */; };
+		AA000105 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000105 /* ContentView.swift */; };
+		AA000106 /* EvaluateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000106 /* EvaluateView.swift */; };
+		AA000107 /* InsightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000107 /* InsightsView.swift */; };
+		AA000108 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000108 /* SettingsView.swift */; };
+		AA000109 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB000109 /* Assets.xcassets */; };
+		AA000110 /* VoiceInputService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000110 /* VoiceInputService.swift */; };
+		AA000111 /* MileageTrackerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000111 /* MileageTrackerService.swift */; };
+		AA000112 /* MileageBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000112 /* MileageBarView.swift */; };
+		AA000113 /* VerdictCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000113 /* VerdictCardView.swift */; };
+		AA000114 /* InputCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000114 /* InputCardView.swift */; };
+		AA000115 /* DashShiftActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000115 /* DashShiftActivityAttributes.swift */; };
+		AA000201 /* DashProfitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000201 /* DashProfitTests.swift */; };
+		AA000301 /* DashProfitWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000301 /* DashProfitWidgetBundle.swift */; };
+		AA000302 /* DashShiftLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000302 /* DashShiftLiveActivity.swift */; };
+		AA000303 /* DashShiftActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000115 /* DashShiftActivityAttributes.swift */; };
+		AA000304 /* DashProfitWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = CC000003 /* DashProfitWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		LL000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = JJ000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FF000001;
+			remoteInfo = DashProfit;
+		};
+		LL000002 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = JJ000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FF000003;
+			remoteInfo = DashProfitWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		PP000001 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				AA000304 /* DashProfitWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		BB000101 /* DashProfitApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashProfitApp.swift; sourceTree = "<group>"; };
+		BB000102 /* OfferModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferModels.swift; sourceTree = "<group>"; };
+		BB000104 /* StorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageService.swift; sourceTree = "<group>"; };
+		BB000105 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		BB000106 /* EvaluateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvaluateView.swift; sourceTree = "<group>"; };
+		BB000107 /* InsightsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsView.swift; sourceTree = "<group>"; };
+		BB000108 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		BB000109 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BB000110 /* VoiceInputService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceInputService.swift; sourceTree = "<group>"; };
+		BB000111 /* MileageTrackerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MileageTrackerService.swift; sourceTree = "<group>"; };
+		BB000112 /* MileageBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MileageBarView.swift; sourceTree = "<group>"; };
+		BB000113 /* VerdictCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerdictCardView.swift; sourceTree = "<group>"; };
+		BB000114 /* InputCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputCardView.swift; sourceTree = "<group>"; };
+		BB000115 /* DashShiftActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashShiftActivityAttributes.swift; sourceTree = "<group>"; };
+		BB000201 /* DashProfitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashProfitTests.swift; sourceTree = "<group>"; };
+		BB000301 /* DashProfitWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashProfitWidgetBundle.swift; sourceTree = "<group>"; };
+		BB000302 /* DashShiftLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashShiftLiveActivity.swift; sourceTree = "<group>"; };
+		BB000303 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CC000001 /* DashProfit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DashProfit.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC000002 /* DashProfitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DashProfitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC000003 /* DashProfitWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = DashProfitWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DD000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DD000002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DD000003 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		EE000001 = {
+			isa = PBXGroup;
+			children = (
+				EE000002 /* DashProfit */,
+				EE000020 /* DashProfitTests */,
+				EE000030 /* DashProfitWidget */,
+				EE000003 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		EE000002 /* DashProfit */ = {
+			isa = PBXGroup;
+			children = (
+				BB000101 /* DashProfitApp.swift */,
+				EE000010 /* Models */,
+				EE000011 /* Services */,
+				EE000012 /* Views */,
+				BB000109 /* Assets.xcassets */,
+			);
+			path = DashProfit;
+			sourceTree = "<group>";
+		};
+		EE000003 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CC000001 /* DashProfit.app */,
+				CC000002 /* DashProfitTests.xctest */,
+				CC000003 /* DashProfitWidgetExtension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EE000010 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BB000102 /* OfferModels.swift */,
+				BB000115 /* DashShiftActivityAttributes.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		EE000011 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				BB000104 /* StorageService.swift */,
+				BB000110 /* VoiceInputService.swift */,
+				BB000111 /* MileageTrackerService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		EE000012 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BB000105 /* ContentView.swift */,
+				BB000106 /* EvaluateView.swift */,
+				BB000107 /* InsightsView.swift */,
+				BB000108 /* SettingsView.swift */,
+				BB000112 /* MileageBarView.swift */,
+				BB000113 /* VerdictCardView.swift */,
+				BB000114 /* InputCardView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		EE000020 /* DashProfitTests */ = {
+			isa = PBXGroup;
+			children = (
+				BB000201 /* DashProfitTests.swift */,
+			);
+			path = DashProfitTests;
+			sourceTree = "<group>";
+		};
+		EE000030 /* DashProfitWidget */ = {
+			isa = PBXGroup;
+			children = (
+				BB000301 /* DashProfitWidgetBundle.swift */,
+				BB000302 /* DashShiftLiveActivity.swift */,
+				BB000303 /* Info.plist */,
+			);
+			path = DashProfitWidget;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FF000001 /* DashProfit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = GG000002 /* Build configuration list for PBXNativeTarget "DashProfit" */;
+			buildPhases = (
+				HH000001 /* Sources */,
+				DD000001 /* Frameworks */,
+				II000001 /* Resources */,
+				PP000001 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				MM000002 /* PBXTargetDependency */,
+			);
+			name = DashProfit;
+			productName = DashProfit;
+			productReference = CC000001 /* DashProfit.app */;
+			productType = "com.apple.product-type.application";
+		};
+		FF000002 /* DashProfitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = GG000003 /* Build configuration list for PBXNativeTarget "DashProfitTests" */;
+			buildPhases = (
+				HH000002 /* Sources */,
+				DD000002 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				MM000001 /* PBXTargetDependency */,
+			);
+			name = DashProfitTests;
+			productName = DashProfitTests;
+			productReference = CC000002 /* DashProfitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		FF000003 /* DashProfitWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = GG000004 /* Build configuration list for PBXNativeTarget "DashProfitWidgetExtension" */;
+			buildPhases = (
+				HH000003 /* Sources */,
+				DD000003 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DashProfitWidgetExtension;
+			productName = DashProfitWidgetExtension;
+			productReference = CC000003 /* DashProfitWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		JJ000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					FF000001 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					FF000002 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = FF000001;
+					};
+					FF000003 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
+			};
+			buildConfigurationList = GG000001 /* Build configuration list for PBXProject "DashProfit" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = EE000001;
+			productRefGroup = EE000003 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FF000001 /* DashProfit */,
+				FF000002 /* DashProfitTests */,
+				FF000003 /* DashProfitWidgetExtension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		II000001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA000109 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		HH000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA000101 /* DashProfitApp.swift in Sources */,
+				AA000102 /* OfferModels.swift in Sources */,
+				AA000104 /* StorageService.swift in Sources */,
+				AA000105 /* ContentView.swift in Sources */,
+				AA000106 /* EvaluateView.swift in Sources */,
+				AA000107 /* InsightsView.swift in Sources */,
+				AA000108 /* SettingsView.swift in Sources */,
+				AA000110 /* VoiceInputService.swift in Sources */,
+				AA000111 /* MileageTrackerService.swift in Sources */,
+				AA000112 /* MileageBarView.swift in Sources */,
+				AA000113 /* VerdictCardView.swift in Sources */,
+				AA000114 /* InputCardView.swift in Sources */,
+				AA000115 /* DashShiftActivityAttributes.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		HH000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA000201 /* DashProfitTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		HH000003 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA000301 /* DashProfitWidgetBundle.swift in Sources */,
+				AA000302 /* DashShiftLiveActivity.swift in Sources */,
+				AA000303 /* DashShiftActivityAttributes.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		MM000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FF000001 /* DashProfit */;
+			targetProxy = LL000001 /* PBXContainerItemProxy */;
+		};
+		MM000002 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FF000003 /* DashProfitWidgetExtension */;
+			targetProxy = LL000002 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		KK000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		KK000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		KK000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = J8FWDL4MAZ;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "DashProfit tracks your shift miles in the background while you drive with navigation or delivery apps open.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "DashProfit uses your location to track actual shift and trip miles driven.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "DashProfit uses the microphone so you can verbally enter payout, miles, and estimated time.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "DashProfit uses speech recognition to convert your spoken offer details into numbers.";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UIBackgroundModes = location;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dashprofit.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		KK000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = J8FWDL4MAZ;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "DashProfit tracks your shift miles in the background while you drive with navigation or delivery apps open.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "DashProfit uses your location to track actual shift and trip miles driven.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "DashProfit uses the microphone so you can verbally enter payout, miles, and estimated time.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "DashProfit uses speech recognition to convert your spoken offer details into numbers.";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UIBackgroundModes = location;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dashprofit.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		KK000005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dashprofit.app.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DashProfit.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DashProfit";
+			};
+			name = Debug;
+		};
+		KK000006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dashprofit.app.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DashProfit.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DashProfit";
+			};
+			name = Release;
+		};
+		KK000007 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DashProfitWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dashprofit.app.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		KK000008 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DashProfitWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dashprofit.app.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		GG000001 /* Build configuration list for PBXProject "DashProfit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				KK000001 /* Debug */,
+				KK000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		GG000002 /* Build configuration list for PBXNativeTarget "DashProfit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				KK000003 /* Debug */,
+				KK000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		GG000003 /* Build configuration list for PBXNativeTarget "DashProfitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				KK000005 /* Debug */,
+				KK000006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		GG000004 /* Build configuration list for PBXNativeTarget "DashProfitWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				KK000007 /* Debug */,
+				KK000008 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = JJ000001 /* Project object */;
+}
