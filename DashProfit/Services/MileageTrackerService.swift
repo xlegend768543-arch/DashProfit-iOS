@@ -181,7 +181,7 @@ final class MileageTrackerService: NSObject, CLLocationManagerDelegate {
         }
 
         if let start = shiftStartTime, shiftMiles >= 0.05 {
-            let settings = DashSettings.loadShared()
+            let settings = DashSettings.load()
             let shift = LoggedShift(
                 id: UUID(),
                 startTime: start,
@@ -318,7 +318,7 @@ final class MileageTrackerService: NSObject, CLLocationManagerDelegate {
     private func startLiveActivityIfAvailable() {
         #if canImport(ActivityKit)
         guard ActivityAuthorizationInfo().areActivitiesEnabled else { return }
-        let settings = DashSettings.loadShared()
+        let settings = DashSettings.load()
         let attrs = DashShiftActivityAttributes(irsRate: settings.irsRate)
         let state = DashShiftActivityAttributes.ContentState(
             milesToday: shiftMiles,

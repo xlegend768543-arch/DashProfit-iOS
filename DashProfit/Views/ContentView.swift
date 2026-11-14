@@ -31,15 +31,15 @@ struct ContentView: View {
             }
         }
         .alert(
-            "Recovered Unsaved Shift",
+            "Data Recovered",
             isPresented: Binding(
-                get: { store.recoveredSessionMessage != nil },
-                set: { if !$0 { store.recoveredSessionMessage = nil } }
+                get: { store.startupMessage != nil },
+                set: { if !$0 { store.startupMessage = nil } }
             )
         ) {
-            Button("OK") { store.recoveredSessionMessage = nil }
+            Button("OK") { store.startupMessage = nil }
         } message: {
-            Text(store.recoveredSessionMessage ?? "")
+            Text(store.startupMessage ?? "")
         }
     }
 }

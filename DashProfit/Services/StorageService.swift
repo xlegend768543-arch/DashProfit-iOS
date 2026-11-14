@@ -1,19 +1,12 @@
 import Foundation
 import Observation
-import UIKit
-
-private struct PersistedStoreBlob: Codable {
-    var orders: [LoggedOrder]
-    var shifts: [LoggedShift]
-    var dailyMileage: [String: DailyMileageEntry]
-    var expenses: [LoggedExpense]
-}
+import os
 
 @Observable
 final class DashStore {
     var settings: DashSettings {
         didSet {
-            settings.saveShared()
+            settings.save()
             invalidateSummaryCache()
         }
     }
@@ -46,7 +39,8 @@ final class DashStore {
         }
     }
 
-    var recoveredSessionMessage: String?
+    /// Shown once at launch: recovered GPS session and/or data-file recovery.
+    var startupMessage: String?
 
     private let legacyOrdersKey = "dashprofit_ios_orders_v1"
     private let legacyShiftsKey = "dashprofit_ios_shifts_v1"
@@ -54,11 +48,12 @@ final class DashStore {
     private let seededKey = "dashprofit_ios_seeded_v1"
 
     private let storeFileURL: URL
+    private static let logger = Logger(subsystem: "com.dashprofit.app", category: "storage")
     private var saveWorkItem: DispatchWorkItem?
     private var cachedTodayBase: (dateKey: String, base: DailySummary)?
 
     init(storeURL: URL? = nil, skipAutoSeed: Bool = false) {
-        self.settings = DashSettings.loadShared()
+        self.settings = DashSettings.load()
         if let storeURL {
             self.storeFileURL = storeURL
         } else {
@@ -69,14 +64,19 @@ final class DashStore {
             self.storeFileURL = dir.appendingPathComponent("dashprofit_store_v2.json")
         }
 
-        if let data = try? Data(contentsOf: self.storeFileURL),
-           let blob = try? JSONDecoder().decode(PersistedStoreBlob.self, from: data) {
+        var notices: [String] = []
+        let loaded = StoreFileLoader.load(from: self.storeFileURL)
+        if let message = loaded.message {
+            notices.append(message)
+        }
+
+        if let blob = loaded.blob {
             self.orders = blob.orders
             self.shifts = blob.shifts
             self.dailyMileage = blob.dailyMileage
             self.expenses = blob.expenses
         } else {
-            // Migrate legacy UserDefaults storage on first launch
+            // No data file yet: migrate legacy UserDefaults storage on first launch
             var loadedOrders: [LoggedOrder] = []
             if let data = UserDefaults.standard.data(forKey: legacyOrdersKey),
                let decoded = try? JSONDecoder().decode([LoggedOrder].self, from: data) {
@@ -114,10 +114,11 @@ final class DashStore {
                 self.dailyMileage[recovered.dateKey] = entry
             }
             if let shift = recovered.shift {
-                self.recoveredSessionMessage = String(format: "Recovered %.2f GPS mi from last session", shift.miles)
+                notices.append(String(format: "Recovered %.2f GPS mi from your last session.", shift.miles))
             }
         }
 
+        self.startupMessage = notices.isEmpty ? nil : notices.joined(separator: "\n\n")
         flushSave()
     }
 
@@ -139,15 +140,46 @@ final class DashStore {
     func flushSave() {
         saveWorkItem?.cancel()
         saveWorkItem = nil
-        let blob = PersistedStoreBlob(
+        do {
+            let data = try JSONEncoder().encode(currentBlob)
+            try data.write(to: storeFileURL, options: .atomic)
+        } catch {
+            Self.logger.error("Saving data file failed: \(error.localizedDescription, privacy: .public)")
+        }
+    }
+
+    private var currentBlob: PersistedStoreBlob {
+        PersistedStoreBlob(
             orders: orders,
             shifts: shifts,
             dailyMileage: dailyMileage,
             expenses: expenses
         )
-        if let data = try? JSONEncoder().encode(blob) {
-            try? data.write(to: storeFileURL, options: .atomic)
+    }
+
+    // MARK: - Backup & Restore
+
+    func makeBackup(now: Date = Date()) -> DashBackup {
+        DashBackup(exportedAt: now, settings: settings.sanitized, data: currentBlob)
+    }
+
+    /// Replaces all data and settings with the backup. The data being replaced is
+    /// first written next to the data file as `<name>.pre-restore.json`.
+    func restore(from backup: DashBackup) {
+        flushSave()
+        let safetyCopy = storeFileURL.deletingPathExtension().appendingPathExtension("pre-restore.json")
+        do {
+            try JSONEncoder().encode(currentBlob).write(to: safetyCopy, options: .atomic)
+        } catch {
+            Self.logger.error("Writing pre-restore copy failed: \(error.localizedDescription, privacy: .public)")
         }
+
+        settings = backup.settings.sanitized
+        orders = backup.data.orders
+        shifts = backup.data.shifts
+        dailyMileage = backup.data.dailyMileage
+        expenses = backup.data.expenses
+        flushSave()
     }
 
     // MARK: - Today & Period Summaries (Cached Base)
@@ -343,28 +375,55 @@ final class DashStore {
         deadheadMultiplier: Double,
         waitMinutes: Int
     ) {
-        let cleanMerchant = merchant.trimmingCharacters(in: .whitespacesAndNewlines)
         let entry = LoggedOrder(
-            id: UUID(),
-            timestamp: Date(),
-            merchant: cleanMerchant.isEmpty ? "DoorDash Order" : cleanMerchant,
+            evaluation: evaluation,
+            merchant: merchant,
+            orderType: orderType,
+            deadheadMultiplier: deadheadMultiplier,
+            waitMinutes: waitMinutes,
+            decision: decision
+        )
+        orders.insert(entry, at: 0)
+    }
+
+    /// Re-evaluates an existing order with corrected inputs (keeps its id and time).
+    /// Returns false if the inputs don't form a valid offer or the order is gone.
+    @discardableResult
+    func updateOrder(
+        id: UUID,
+        payout: Double,
+        miles: Double,
+        minutes: Int,
+        deadheadMultiplier: Double,
+        waitMinutes: Int,
+        orderType: OrderType,
+        merchant: String,
+        decision: OrderDecision
+    ) -> Bool {
+        guard let index = orders.firstIndex(where: { $0.id == id }),
+              let evaluation = OfferCalculator.evaluate(
+                payout: payout,
+                miles: miles,
+                minutes: minutes,
+                deadheadMultiplier: deadheadMultiplier,
+                waitMinutes: waitMinutes,
+                settings: settings
+              ) else {
+            return false
+        }
+        let original = orders[index]
+        orders[index] = LoggedOrder(
+            id: original.id,
+            timestamp: original.timestamp,
+            evaluation: evaluation,
+            merchant: merchant,
             orderType: orderType,
             deadheadMultiplier: deadheadMultiplier,
             waitMinutes: waitMinutes,
             decision: decision,
-            payout: evaluation.payout,
-            shownMiles: evaluation.shownMiles,
-            effectiveMiles: evaluation.effectiveMiles,
-            effectiveMinutes: evaluation.effectiveMinutes,
-            vehicleCost: evaluation.vehicleCost,
-            netProfit: evaluation.netProfit,
-            netHourly: evaluation.netHourly,
-            effectivePerMile: evaluation.effectivePerMile,
-            taxDeduction: evaluation.taxDeduction,
-            score: evaluation.score,
-            isSample: false
+            isSample: original.isSample
         )
-        orders.insert(entry, at: 0)
+        return true
     }
 
     func deleteOrder(id: UUID) {
@@ -402,23 +461,13 @@ final class DashStore {
                 settings: settings
             ) {
                 generated.append(LoggedOrder(
-                    id: UUID(),
                     timestamp: now.addingTimeInterval(s.8),
+                    evaluation: eval,
                     merchant: s.6,
                     orderType: s.5,
                     deadheadMultiplier: s.3,
                     waitMinutes: s.4,
                     decision: s.7,
-                    payout: eval.payout,
-                    shownMiles: eval.shownMiles,
-                    effectiveMiles: eval.effectiveMiles,
-                    effectiveMinutes: eval.effectiveMinutes,
-                    vehicleCost: eval.vehicleCost,
-                    netProfit: eval.netProfit,
-                    netHourly: eval.netHourly,
-                    effectivePerMile: eval.effectivePerMile,
-                    taxDeduction: eval.taxDeduction,
-                    score: eval.score,
                     isSample: true
                 ))
             }
@@ -429,7 +478,7 @@ final class DashStore {
     // MARK: - CSV Exports
 
     private static func escapeCSV(_ value: String) -> String {
-        if value.contains(",") || value.contains("\"") || value.contains("\n") {
+        if value.contains(",") || value.contains("\"") || value.contains("\n") || value.contains("\r") {
             return "\"\(value.replacingOccurrences(of: "\"", with: "\"\""))\""
         }
         return value

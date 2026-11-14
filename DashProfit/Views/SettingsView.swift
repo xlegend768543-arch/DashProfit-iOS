@@ -1,8 +1,17 @@
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct SettingsView: View {
     @Bindable var store: DashStore
     @FocusState private var isInputFocused: Bool
+
+    @State private var exportDocument: BackupDocument?
+    @State private var exportFilename = "DashProfit-Backup"
+    @State private var showExporter = false
+    @State private var showImporter = false
+    @State private var pendingRestore: DashBackup?
+    @State private var backupStatus: String?
+    @State private var backupStatusIsError = false
 
     private var taxSetAsidePercentBinding: Binding<Double> {
         Binding(
@@ -46,6 +55,28 @@ struct SettingsView: View {
                             .foregroundStyle(.secondary)
                     }
                 }
+
+                Section {
+                    Button {
+                        prepareExport()
+                    } label: {
+                        Label("Back Up to Files…", systemImage: "externaldrive.badge.icloud")
+                    }
+                    Button {
+                        showImporter = true
+                    } label: {
+                        Label("Restore from Backup…", systemImage: "arrow.counterclockwise.icloud")
+                    }
+                    if let backupStatus {
+                        Text(backupStatus)
+                            .font(.caption)
+                            .foregroundStyle(backupStatusIsError ? .red : .green)
+                    }
+                } header: {
+                    Text("Backup & Restore")
+                } footer: {
+                    Text("Saves all orders, mileage, shifts, expenses and settings as one file. Pick iCloud Drive to keep it safe if you lose your phone.")
+                }
             }
             .navigationTitle("Rules & Car")
             .toolbar {
@@ -65,7 +96,73 @@ struct SettingsView: View {
             .onDisappear {
                 store.settings = store.settings.sanitized
             }
+            .fileExporter(
+                isPresented: $showExporter,
+                document: exportDocument,
+                contentType: .json,
+                defaultFilename: exportFilename
+            ) { result in
+                switch result {
+                case .success:
+                    setStatus("Backup saved.", isError: false)
+                case .failure(let error):
+                    setStatus("Backup failed: \(error.localizedDescription)", isError: true)
+                }
+                exportDocument = nil
+            }
+            .fileImporter(
+                isPresented: $showImporter,
+                allowedContentTypes: [.json]
+            ) { result in
+                handleImport(result)
+            }
+            .confirmationDialog(
+                "Replace All Data?",
+                isPresented: Binding(
+                    get: { pendingRestore != nil },
+                    set: { if !$0 { pendingRestore = nil } }
+                ),
+                titleVisibility: .visible,
+                presenting: pendingRestore
+            ) { backup in
+                Button("Replace with Backup", role: .destructive) {
+                    store.restore(from: backup)
+                    setStatus("Restored \(backup.summaryText).", isError: false)
+                    pendingRestore = nil
+                }
+                Button("Cancel", role: .cancel) { pendingRestore = nil }
+            } message: { backup in
+                Text("Backup from \(backup.exportedAt.formatted(date: .abbreviated, time: .shortened)): \(backup.summaryText). Your current data and settings will be replaced (a safety copy is kept on this phone).")
+            }
         }
+    }
+
+    private func prepareExport() {
+        let backup = store.makeBackup()
+        do {
+            exportDocument = BackupDocument(data: try backup.encoded())
+            exportFilename = backup.suggestedFilename
+            showExporter = true
+        } catch {
+            setStatus("Backup failed: \(error.localizedDescription)", isError: true)
+        }
+    }
+
+    private func handleImport(_ result: Result<URL, Error>) {
+        do {
+            let url = try result.get()
+            let didAccess = url.startAccessingSecurityScopedResource()
+            defer { if didAccess { url.stopAccessingSecurityScopedResource() } }
+            let data = try Data(contentsOf: url)
+            pendingRestore = try DashBackup.decode(from: data)
+        } catch {
+            setStatus("Couldn't read that backup: \(error.localizedDescription)", isError: true)
+        }
+    }
+
+    private func setStatus(_ message: String, isError: Bool) {
+        backupStatus = message
+        backupStatusIsError = isError
     }
 
     private func doubleRow(_ title: String, value: Binding<Double>) -> some View {

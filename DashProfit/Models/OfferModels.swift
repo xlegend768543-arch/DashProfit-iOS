@@ -140,26 +140,19 @@ struct DashSettings: Codable, Equatable {
         return s
     }
 
-    static let appGroupID = "group.com.dashprofit.app"
     private static let settingsKey = "dashprofit_ios_settings_v1"
 
-    static func loadShared() -> DashSettings {
-        if let groupDefaults = UserDefaults(suiteName: appGroupID),
-           let data = groupDefaults.data(forKey: settingsKey),
-           let decoded = try? JSONDecoder().decode(DashSettings.self, from: data) {
-            return decoded.sanitized
-        }
-        if let data = UserDefaults.standard.data(forKey: settingsKey),
+    static func load(from defaults: UserDefaults = .standard) -> DashSettings {
+        if let data = defaults.data(forKey: settingsKey),
            let decoded = try? JSONDecoder().decode(DashSettings.self, from: data) {
             return decoded.sanitized
         }
         return DashSettings()
     }
 
-    func saveShared() {
+    func save(to defaults: UserDefaults = .standard) {
         guard let data = try? JSONEncoder().encode(self.sanitized) else { return }
-        UserDefaults.standard.set(data, forKey: Self.settingsKey)
-        UserDefaults(suiteName: Self.appGroupID)?.set(data, forKey: Self.settingsKey)
+        defaults.set(data, forKey: Self.settingsKey)
     }
 }
 
@@ -329,68 +322,6 @@ enum OfferCalculator {
             verdictTitle: verdictTitle,
             reason: reason
         )
-    }
-
-    static func analyzePatterns(orders: [LoggedOrder]) -> [PatternSummary] {
-        let taken = orders.filter { $0.decision == .take && !$0.isSample }
-        guard taken.count >= 2 else { return [] }
-
-        struct Bucket {
-            let id: String
-            let label: String
-            var count = 0
-            var netProfit = 0.0
-            var minutes = 0
-            var miles = 0.0
-            var payout = 0.0
-        }
-
-        var map: [String: Bucket] = [:]
-        func add(_ id: String, _ label: String, _ order: LoggedOrder) {
-            var b = map[id] ?? Bucket(id: id, label: label)
-            b.count += 1
-            b.netProfit += order.netProfit
-            b.minutes += order.effectiveMinutes
-            b.miles += order.effectiveMiles
-            b.payout += order.payout
-            map[id] = b
-        }
-
-        for order in taken {
-            if order.shownMiles < 3 {
-                add("dist-short", "Short (< 3 mi)", order)
-            } else if order.shownMiles <= 7 {
-                add("dist-med", "Medium (3–7 mi)", order)
-            } else {
-                add("dist-long", "Long (7+ mi)", order)
-            }
-
-            switch order.orderType {
-            case .food: add("type-food", "Food Delivery", order)
-            case .shop: add("type-shop", "Shop & Pay", order)
-            case .stack: add("type-stack", "Stacked (2+)", order)
-            }
-
-            if order.payout < 8 {
-                add("pay-low", "Small (< $8)", order)
-            } else if order.payout <= 15 {
-                add("pay-mid", "Sweet Spot ($8–$15)", order)
-            } else {
-                add("pay-high", "High Payout ($15+)", order)
-            }
-        }
-
-        return map.values
-            .map { b in
-                PatternSummary(
-                    id: b.id,
-                    label: b.label,
-                    count: b.count,
-                    netHourly: (b.netProfit / Double(max(1, b.minutes))) * 60.0,
-                    avgPerMile: b.payout / max(0.1, b.miles)
-                )
-            }
-            .sorted { $0.netHourly > $1.netHourly }
     }
 
     static func localDateKey(for date: Date = Date()) -> String {
