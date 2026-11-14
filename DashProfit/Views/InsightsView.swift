@@ -12,6 +12,7 @@ struct InsightsView: View {
     @State private var showClearOrdersConfirmation = false
     @State private var showClearShiftsConfirmation = false
     @State private var showClearExpensesConfirmation = false
+    @State private var editingOrder: LoggedOrder?
 
     private var nonSampleOrders: [LoggedOrder] {
         store.orders.filter { !$0.isSample }
@@ -43,6 +44,14 @@ struct InsightsView: View {
 
     private var patterns: [PatternSummary] {
         OfferCalculator.analyzePatterns(orders: store.orders)
+    }
+
+    private var dayPartPatterns: [PatternSummary] {
+        OfferCalculator.dayPartPatterns(orders: store.orders)
+    }
+
+    private var weekdayPatterns: [PatternSummary] {
+        OfferCalculator.weekdayPatterns(orders: store.orders)
     }
 
     private var hasSampleOrders: Bool {
@@ -261,30 +270,31 @@ struct InsightsView: View {
                             .font(.footnote)
                             .foregroundStyle(.secondary)
                     } else {
-                        let maxHr = max(1.0, patterns.map(\.netHourly).max() ?? 1.0)
-                        ForEach(patterns) { pattern in
-                            VStack(alignment: .leading, spacing: 6) {
-                                HStack {
-                                    Text("\(pattern.label) (\(pattern.count))")
-                                        .font(.subheadline.weight(.semibold))
-                                    Spacer()
-                                    Text(String(format: "$%.2f/hr • $%.2f/mi", pattern.netHourly, pattern.avgPerMile))
-                                        .font(.caption.weight(.bold))
-                                        .foregroundStyle(.green)
-                                }
-                                GeometryReader { geo in
-                                    ZStack(alignment: .leading) {
-                                        Capsule().fill(Color(.tertiarySystemFill))
-                                        Capsule()
-                                            .fill(Color.green)
-                                            .frame(width: max(12, geo.size.width * min(1.0, pattern.netHourly / maxHr)))
-                                    }
-                                }
-                                .frame(height: 8)
-                            }
-                            .padding(.vertical, 4)
-                        }
+                        patternRows(patterns)
                     }
+                }
+
+                // Section 4b: Best Times
+                Section {
+                    if dayPartPatterns.isEmpty {
+                        Text("Log at least 2 real taken orders to see which times and days pay best.")
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                    } else {
+                        Text("Time of Day")
+                            .font(.caption.weight(.bold))
+                            .foregroundStyle(.secondary)
+                        patternRows(dayPartPatterns)
+                        Text("Day of Week")
+                            .font(.caption.weight(.bold))
+                            .foregroundStyle(.secondary)
+                        patternRows(weekdayPatterns)
+                    }
+                } header: {
+                    Text("When You Earn Most")
+                } footer: {
+                    Text("Based on when you logged each taken order.")
+                        .font(.caption2)
                 }
 
                 // Section 5: GPS Shift Mileage
@@ -366,6 +376,10 @@ struct InsightsView: View {
                                     .font(.subheadline.weight(.bold))
                                     .foregroundStyle(.green)
                             }
+                            .contentShape(Rectangle())
+                            .onTapGesture { editingOrder = order }
+                            .accessibilityAddTraits(.isButton)
+                            .accessibilityHint("Edit this order")
                         }
                         .onDelete { offsets in
                             let ids = offsets.map { store.orders[$0].id }
@@ -374,7 +388,7 @@ struct InsightsView: View {
                     }
                 } header: {
                     HStack {
-                        Text("Order Log")
+                        Text("Order Log (tap to edit)")
                         Spacer()
                         if !store.orders.isEmpty {
                             Button("Clear All", role: .destructive) {
@@ -386,6 +400,9 @@ struct InsightsView: View {
                 }
             }
             .navigationTitle("Insights")
+            .sheet(item: $editingOrder) { order in
+                OrderEditView(store: store, order: order)
+            }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
@@ -432,6 +449,34 @@ struct InsightsView: View {
                 }
                 Button("Cancel", role: .cancel) {}
             }
+        }
+    }
+
+    @ViewBuilder
+    private func patternRows(_ rows: [PatternSummary]) -> some View {
+        let maxHr = max(1.0, rows.map(\.netHourly).max() ?? 1.0)
+        ForEach(rows) { pattern in
+            VStack(alignment: .leading, spacing: 6) {
+                HStack {
+                    Text("\(pattern.label) (\(pattern.count))")
+                        .font(.subheadline.weight(.semibold))
+                    Spacer()
+                    Text(String(format: "$%.2f/hr • $%.2f/mi", pattern.netHourly, pattern.avgPerMile))
+                        .font(.caption.weight(.bold))
+                        .foregroundStyle(.green)
+                }
+                GeometryReader { geo in
+                    ZStack(alignment: .leading) {
+                        Capsule().fill(Color(.tertiarySystemFill))
+                        Capsule()
+                            .fill(Color.green)
+                            .frame(width: max(12, geo.size.width * min(1.0, max(0.0, pattern.netHourly) / maxHr)))
+                    }
+                }
+                .frame(height: 8)
+            }
+            .padding(.vertical, 4)
+            .accessibilityElement(children: .combine)
         }
     }
 

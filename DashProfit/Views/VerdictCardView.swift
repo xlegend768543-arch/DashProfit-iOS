@@ -2,6 +2,8 @@ import SwiftUI
 
 struct VerdictCardView: View {
     let evaluation: OfferEvaluation?
+    var merchantName: String = ""
+    var history: MerchantHistory?
 
     private var verdictColor: Color {
         switch evaluation?.verdict {
@@ -54,6 +56,10 @@ struct VerdictCardView: View {
                 .font(.footnote)
                 .foregroundStyle(.secondary)
 
+            if let history {
+                historyLine(history)
+            }
+
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 8) {
                 metricTile(
                     label: "Net $/Hr",
@@ -86,6 +92,31 @@ struct VerdictCardView: View {
                         .stroke(verdictColor.opacity(evaluation == nil ? 0.15 : 0.55), lineWidth: 1.5)
                 )
         )
+    }
+
+    private func historyLine(_ h: MerchantHistory) -> some View {
+        let name = merchantName.trimmingCharacters(in: .whitespacesAndNewlines)
+        let text: String
+        let tint: Color
+        if h.takenCount > 0 {
+            var parts = ["\(h.takenCount) taken"]
+            if h.passedCount > 0 { parts.append("\(h.passedCount) passed") }
+            text = String(format: "Your %@ history: %@ • $%.2f/hr • $%.2f/mi",
+                          name, parts.joined(separator: ", "), h.netHourly, h.avgPerMile)
+            if let eval = evaluation {
+                tint = eval.netHourly >= h.netHourly ? .green : .orange
+            } else {
+                tint = .secondary
+            }
+        } else {
+            text = "You've passed \(name) \(h.passedCount)× and never taken it"
+            tint = .orange
+        }
+        return Label(text, systemImage: "clock.arrow.circlepath")
+            .font(.caption.weight(.semibold))
+            .foregroundStyle(tint)
+            .lineLimit(2)
+            .accessibilityLabel(text)
     }
 
     private func metricTile(label: String, value: String, sub: String) -> some View {

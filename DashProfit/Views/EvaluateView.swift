@@ -51,7 +51,11 @@ struct EvaluateView: View {
                         }
                     )
 
-                    VerdictCardView(evaluation: eval)
+                    VerdictCardView(
+                        evaluation: eval,
+                        merchantName: merchantText,
+                        history: OfferCalculator.merchantHistory(for: merchantText, in: store.orders)
+                    )
 
                     InputCardView(
                         payoutText: $payoutText,

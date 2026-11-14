@@ -21,6 +21,9 @@
 		AA000113 /* VerdictCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000113 /* VerdictCardView.swift */; };
 		AA000114 /* InputCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000114 /* InputCardView.swift */; };
 		AA000115 /* DashShiftActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000115 /* DashShiftActivityAttributes.swift */; };
+		AA000116 /* OrderInsights.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000116 /* OrderInsights.swift */; };
+		AA000117 /* DataBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000117 /* DataBackup.swift */; };
+		AA000118 /* OrderEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000118 /* OrderEditView.swift */; };
 		AA000201 /* DashProfitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000201 /* DashProfitTests.swift */; };
 		AA000301 /* DashProfitWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000301 /* DashProfitWidgetBundle.swift */; };
 		AA000302 /* DashShiftLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB000302 /* DashShiftLiveActivity.swift */; };
@@ -74,6 +77,9 @@
 		BB000113 /* VerdictCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerdictCardView.swift; sourceTree = "<group>"; };
 		BB000114 /* InputCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputCardView.swift; sourceTree = "<group>"; };
 		BB000115 /* DashShiftActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashShiftActivityAttributes.swift; sourceTree = "<group>"; };
+		BB000116 /* OrderInsights.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderInsights.swift; sourceTree = "<group>"; };
+		BB000117 /* DataBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataBackup.swift; sourceTree = "<group>"; };
+		BB000118 /* OrderEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderEditView.swift; sourceTree = "<group>"; };
 		BB000201 /* DashProfitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashProfitTests.swift; sourceTree = "<group>"; };
 		BB000301 /* DashProfitWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashProfitWidgetBundle.swift; sourceTree = "<group>"; };
 		BB000302 /* DashShiftLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashShiftLiveActivity.swift; sourceTree = "<group>"; };
@@ -145,6 +151,7 @@
 			children = (
 				BB000102 /* OfferModels.swift */,
 				BB000115 /* DashShiftActivityAttributes.swift */,
+				BB000116 /* OrderInsights.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -155,6 +162,7 @@
 				BB000104 /* StorageService.swift */,
 				BB000110 /* VoiceInputService.swift */,
 				BB000111 /* MileageTrackerService.swift */,
+				BB000117 /* DataBackup.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -169,6 +177,7 @@
 				BB000112 /* MileageBarView.swift */,
 				BB000113 /* VerdictCardView.swift */,
 				BB000114 /* InputCardView.swift */,
+				BB000118 /* OrderEditView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -317,6 +326,9 @@
 				AA000113 /* VerdictCardView.swift in Sources */,
 				AA000114 /* InputCardView.swift in Sources */,
 				AA000115 /* DashShiftActivityAttributes.swift in Sources */,
+				AA000118 /* OrderEditView.swift in Sources */,
+				AA000117 /* DataBackup.swift in Sources */,
+				AA000116 /* OrderInsights.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
