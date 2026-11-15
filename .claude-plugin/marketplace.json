@@ -1,0 +1,14 @@
+{
+  "name": "dashprofit-plugins",
+  "owner": {
+    "name": "xlegend768543-arch"
+  },
+  "description": "Claude Code plugins kept with the DashProfit iOS repo.",
+  "plugins": [
+    {
+      "name": "callimachus-kit",
+      "source": "./plugins/callimachus-kit",
+      "description": "Everyday commands on top of Callimachus: why, preflight, seen-this, standup, wrap-up, spend."
+    }
+  ]
+}
