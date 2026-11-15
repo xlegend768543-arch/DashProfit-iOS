@@ -1,0 +1,12 @@
+{
+  "name": "callimachus-kit",
+  "displayName": "Callimachus Kit",
+  "version": "0.1.0",
+  "description": "Everyday commands on top of Callimachus, your local index of AI coding sessions: why a line exists, a pre-task history check, have-I-seen-this-error, a standup, an end-of-session memory save, and spend.",
+  "author": {
+    "name": "xlegend768543-arch",
+    "url": "https://github.com/xlegend768543-arch"
+  },
+  "repository": "https://github.com/xlegend768543-arch/DashProfit-iOS",
+  "keywords": ["callimachus", "memory", "history", "standup", "cost"]
+}
