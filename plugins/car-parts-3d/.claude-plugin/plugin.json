@@ -1,0 +1,12 @@
+{
+  "name": "car-parts-3d",
+  "displayName": "Car Parts 3D",
+  "version": "0.1.0",
+  "description": "Build 3D car models with every part a separate, labeled object priced at OEM retail and aftermarket: a parts catalog with a price contract, Blender build and audit scripts, GLB/USD export checks, and a three.js viewer with labels, totals and an exploded view.",
+  "author": {
+    "name": "xlegend768543-arch",
+    "url": "https://github.com/xlegend768543-arch"
+  },
+  "repository": "https://github.com/xlegend768543-arch/DashProfit-iOS",
+  "keywords": ["3d", "car", "auto-parts", "pricing", "aftermarket", "blender", "gltf", "three.js"]
+}

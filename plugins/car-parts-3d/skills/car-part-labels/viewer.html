@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Car Parts Viewer</title>
+<!--
+  Labeled, priced 3D car viewer.
+  Serve this file next to model.glb and catalog.json (any static server), or pass
+  ?model=path.glb&catalog=path.json, or drop both files on the page.
+  Parts are joined to the catalog by node userData.part_id (glTF extras) or node name.
+  Prices come only from the catalog; nothing is hard-coded here.
+-->
+<style>
+  :root {
+    --bg: #f4f4f2; --panel: #ffffff; --ink: #1d1d1f; --muted: #6b6b70; --line: #dcdcd8;
+    --accent: #c2410c; --retail: #1d4ed8; --after: #047857; --warn: #b45309; --warn-bg: #fef3c7;
+    --label-bg: rgba(255,255,255,.92);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #141416; --panel: #1e1e21; --ink: #ececee; --muted: #9a9aa2; --line: #333338;
+      --accent: #fb923c; --retail: #93b4ff; --after: #5eead4; --warn: #fbbf24; --warn-bg: #3a2e0b;
+      --label-bg: rgba(30,30,33,.92);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #141416; --panel: #1e1e21; --ink: #ececee; --muted: #9a9aa2; --line: #333338;
+    --accent: #fb923c; --retail: #93b4ff; --after: #5eead4; --warn: #fbbf24; --warn-bg: #3a2e0b;
+    --label-bg: rgba(30,30,33,.92);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body { background: var(--bg); color: var(--ink); font: 14px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif;
+         display: grid; grid-template-columns: 1fr 360px; grid-template-rows: auto 1fr; height: 100vh; overflow: hidden; }
+  header { grid-column: 1 / -1; display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+           padding: 10px 16px; border-bottom: 1px solid var(--line); background: var(--panel); }
+  header h1 { font-size: 15px; margin: 0; font-weight: 600; }
+  header .vehicle { color: var(--muted); }
+  header .spacer { flex: 1; }
+  header label { display: inline-flex; gap: 6px; align-items: center; color: var(--muted); }
+  #stage { position: relative; min-height: 0; }
+  #stage canvas { display: block; }
+  #drop { position: absolute; inset: 0; display: none; place-items: center; text-align: center; color: var(--muted); padding: 16px; }
+  #drop.show { display: grid; }
+  aside { background: var(--panel); border-left: 1px solid var(--line); overflow-y: auto; min-height: 0; }
+  section { padding: 12px 16px; border-bottom: 1px solid var(--line); }
+  h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin: 0 0 8px; }
+  .totals { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; }
+  .retail { color: var(--retail); font-variant-numeric: tabular-nums; }
+  .after { color: var(--after); font-variant-numeric: tabular-nums; }
+  .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .badge { display: inline-block; font-size: 11px; padding: 1px 6px; border-radius: 999px; background: var(--warn-bg); color: var(--warn); }
+  .notice { background: var(--warn-bg); color: var(--warn); padding: 8px 10px; border-radius: 6px; font-size: 13px; margin-top: 8px; }
+  #detail .empty { color: var(--muted); }
+  #detail dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 8px 0 0; }
+  #detail dt { color: var(--muted); }
+  #detail dd { margin: 0; overflow-wrap: anywhere; }
+  #detail a { color: inherit; }
+  input[type=search] { width: 100%; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--ink); }
+  details { margin-top: 6px; }
+  summary { cursor: pointer; display: flex; justify-content: space-between; gap: 8px; padding: 4px 0; font-weight: 600; }
+  ul { list-style: none; margin: 0; padding: 0; }
+  li.row { display: grid; grid-template-columns: 1fr auto; gap: 0 8px; padding: 5px 6px; border-radius: 6px; cursor: pointer; }
+  li.row:hover, li.row.sel { background: var(--bg); }
+  li.row .prices { grid-column: 1 / -1; font-size: 12px; }
+  li.row.unmodeled { opacity: .65; }
+  .lbl { background: var(--label-bg); color: var(--ink); border: 1px solid var(--line); border-radius: 6px; padding: 2px 6px;
+         font-size: 11px; white-space: nowrap; pointer-events: auto; cursor: pointer; transform: translateY(-14px); }
+  .lbl.sel { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .lbl .p { font-variant-numeric: tabular-nums; }
+  #tip { position: absolute; pointer-events: none; background: var(--label-bg); border: 1px solid var(--line); border-radius: 8px;
+         padding: 6px 8px; font-size: 12px; display: none; max-width: 260px; z-index: 5; }
+  @media (max-width: 760px) {
+    body { grid-template-columns: 1fr; grid-template-rows: auto 55vh 1fr; overflow: auto; height: auto; }
+    aside { border-left: 0; border-top: 1px solid var(--line); }
+    header { padding: 8px 16px; }
+  }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<header>
+  <h1>Car parts</h1>
+  <span class="vehicle" id="vehicle">Loading…</span>
+  <span class="spacer"></span>
+  <label>Labels
+    <select id="labelMode">
+      <option value="hover">On hover</option>
+      <option value="price">All: name + prices</option>
+      <option value="name">All: name only</option>
+    </select>
+  </label>
+  <label>Explode <input id="explode" type="range" min="0" max="1" step="0.01" value="0"></label>
+</header>
+<div id="stage">
+  <div id="drop">Drop a .glb model and its catalog .json here,<br>or serve this page next to model.glb and catalog.json.</div>
+  <div id="tip"></div>
+</div>
+<aside>
+  <section>
+    <h2>Totals</h2>
+    <div class="totals" id="totals"></div>
+    <div id="notices"></div>
+  </section>
+  <section id="detail"><h2>Selected part</h2><p class="empty">Hover or click a part.</p></section>
+  <section>
+    <h2>Parts</h2>
+    <input type="search" id="search" placeholder="Search parts or part numbers">
+    <div id="list"></div>
+  </section>
+</aside>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+
+const $ = (id) => document.getElementById(id);
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+
+const stage = $('stage');
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+stage.appendChild(renderer.domElement);
+const labelRenderer = new CSS2DRenderer();
+Object.assign(labelRenderer.domElement.style, { position: 'absolute', top: '0', left: '0', pointerEvents: 'none' });
+stage.appendChild(labelRenderer.domElement);
+
+const scene = new THREE.Scene();
+scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), 0.04).texture;
+const camera = new THREE.PerspectiveCamera(40, 1, 0.05, 200);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+const grid = new THREE.GridHelper(12, 24, 0x888888, 0x888888);
+grid.material.opacity = 0.18; grid.material.transparent = true;
+scene.add(grid);
+
+const state = { catalog: null, root: null, parts: new Map(), unknownMeshes: [], hovered: null, selected: null, fmt: null };
+
+function resize() {
+  const w = stage.clientWidth, h = stage.clientHeight;
+  renderer.setSize(w, h); labelRenderer.setSize(w, h);
+  camera.aspect = w / Math.max(h, 1); camera.updateProjectionMatrix();
+}
+new ResizeObserver(resize).observe(stage);
+
+const money = (v) => (v == null ? '—' : state.fmt.format(v));
+const range = (a) => (a ? (a.low === a.high ? money(a.low) : `${money(a.low)}–${money(a.high)}`) : 'none');
+const safeUrl = (u) => { try { const x = new URL(u); return /^https?:$/.test(x.protocol) ? x.href : null; } catch { return null; } };
+
+// ---------- load ----------
+async function loadAll(modelSrc, catalogSrc) {
+  const catalog = typeof catalogSrc === 'string' ? await (await fetch(catalogSrc)).json() : catalogSrc;
+  const gltf = await new GLTFLoader().loadAsync(modelSrc);
+  setup(gltf.scene, catalog);
+}
+
+function setup(root, catalog) {
+  if (state.root) { scene.remove(state.root); state.parts.forEach((p) => p.label && p.label.removeFromParent()); }
+  state.catalog = catalog; state.root = root; state.parts.clear(); state.unknownMeshes = [];
+  state.fmt = new Intl.NumberFormat(undefined, { style: 'currency', currency: catalog.currency || 'USD', maximumFractionDigits: 0 });
+  scene.add(root);
+
+  const byId = new Map(catalog.parts.map((p) => [p.id, p]));
+  catalog.parts.forEach((p) => state.parts.set(p.id, { data: p, obj: null }));
+
+  // Join model nodes to catalog parts: extras.part_id first, then node name.
+  root.traverse((o) => {
+    const id = o.userData?.part_id || o.name;
+    if (byId.has(id) && !state.parts.get(id).obj) {
+      const entry = state.parts.get(id);
+      entry.obj = o;
+      o.userData.partId = id;
+    }
+  });
+  root.traverse((o) => {
+    if (!o.isMesh) return;
+    let a = o; while (a && !a.userData.partId) a = a.parent;
+    if (!a) state.unknownMeshes.push(o.name || '(unnamed mesh)');
+    else o.material = o.material.clone(); // per-part material so highlighting one part leaves others alone
+  });
+
+  // Frame the car, record each part's rest position and explode direction.
+  root.updateMatrixWorld(true);
+  const box = new THREE.Box3().setFromObject(root), center = box.getCenter(new THREE.Vector3()), size = box.getSize(new THREE.Vector3());
+  const radius = size.length() / 2;
+  camera.position.copy(center).add(new THREE.Vector3(radius * 1.4, radius * 0.8, radius * 1.6));
+  controls.target.copy(center); controls.update();
+  grid.position.y = box.min.y;
+
+  for (const [id, entry] of state.parts) {
+    if (!entry.obj) continue;
+    const pb = new THREE.Box3().setFromObject(entry.obj), pc = pb.getCenter(new THREE.Vector3());
+    entry.rest = entry.obj.position.clone();
+    const dir = pc.clone().sub(center); dir.y = Math.max(dir.y, 0) * 0.6;
+    entry.explodeWorld = dir.normalize().multiplyScalar(radius * 0.3);
+    const div = el('div', 'lbl');
+    div.addEventListener('click', (ev) => { ev.stopPropagation(); select(id); });
+    div.addEventListener('pointerenter', () => hover(id));
+    div.addEventListener('pointerleave', () => hover(null));
+    entry.labelEl = div;
+    entry.label = new CSS2DObject(div);
+    entry.label.position.copy(entry.obj.worldToLocal(pc.clone()));
+    entry.obj.add(entry.label);
+  }
+
+  const v = catalog.vehicle || {};
+  $('vehicle').textContent = [v.year, v.make, v.model, v.trim].filter(Boolean).join(' ') + (catalog.priced_on ? ` · priced ${catalog.priced_on}` : '');
+  renderLabels(); renderTotals(); renderList(); renderDetail(null);
+  $('drop').classList.remove('show');
+  document.body.dataset.ready = 'true';
+}
+
+// ---------- labels, totals, list ----------
+function renderLabels() {
+  const mode = $('labelMode').value;
+  for (const [id, entry] of state.parts) {
+    if (!entry.labelEl) continue;
+    const d = entry.data, div = entry.labelEl;
+    div.replaceChildren(el('span', null, d.name));
+    const focused = id === state.selected || id === state.hovered;
+    if (mode === 'price' || (mode === 'hover' && focused)) {
+      div.append(' · ', el('span', 'p retail', money(d.retail?.price)), ' / ', el('span', 'p after', range(d.aftermarket)));
+    }
+    entry.label.visible = mode !== 'hover' || focused;
+    div.classList.toggle('sel', id === state.selected);
+  }
+}
+
+function sums(list) {
+  let r = 0, lo = 0, hi = 0;
+  for (const p of list) {
+    const q = p.quantity || 1, rp = p.retail?.price || 0;
+    r += rp * q;
+    lo += (p.aftermarket ? p.aftermarket.low : rp) * q;  // no aftermarket option: OEM price either way
+    hi += (p.aftermarket ? p.aftermarket.high : rp) * q;
+  }
+  return { r, lo, hi };
+}
+
+function renderTotals() {
+  const all = state.catalog.parts, t = sums(all);
+  const box = $('totals'); box.replaceChildren();
+  const row = (k, v, cls) => box.append(el('span', null, k), el('span', `num ${cls || ''}`, v));
+  row('Retail (OEM)', money(t.r), 'retail');
+  row('Aftermarket', `${money(t.lo)}–${money(t.hi)}`, 'after');
+  if (t.r) row('Aftermarket saves', `${Math.round((1 - t.hi / t.r) * 100)}–${Math.round((1 - t.lo / t.r) * 100)}%`);
+  row('Parts', String(all.length));
+
+  const n = $('notices'); n.replaceChildren();
+  const prices = all.flatMap((p) => [p.retail, p.aftermarket].filter(Boolean));
+  const est = prices.filter((x) => x.basis === 'estimate').length;
+  if (est) n.append(el('div', 'notice', `${est} of ${prices.length} prices are estimates, not quotes.`));
+  const unmodeled = [...state.parts.values()].filter((e) => !e.obj && e.data.visible !== false);
+  if (unmodeled.length) n.append(el('div', 'notice', `${unmodeled.length} catalog part(s) are not in the model: ${unmodeled.map((e) => e.data.id).join(', ')}`));
+  if (state.unknownMeshes.length) n.append(el('div', 'notice', `${state.unknownMeshes.length} mesh(es) are not in the catalog: ${state.unknownMeshes.join(', ')}`));
+}
+
+function renderList() {
+  const q = $('search').value.trim().toLowerCase();
+  const groups = new Map();
+  for (const p of state.catalog.parts) {
+    const hay = `${p.name} ${p.id} ${p.oem_part_number || ''} ${(p.aftermarket?.brands || []).join(' ')}`.toLowerCase();
+    if (q && !hay.includes(q)) continue;
+    if (!groups.has(p.system)) groups.set(p.system, []);
+    groups.get(p.system).push(p);
+  }
+  const list = $('list'); list.replaceChildren();
+  for (const [system, parts] of [...groups].sort()) {
+    const t = sums(parts);
+    const det = el('details'); det.open = true;
+    const sum = el('summary');
+    sum.append(el('span', null, `${system} (${parts.length})`), el('span', 'num retail', money(t.r)));
+    det.append(sum);
+    const ul = el('ul');
+    for (const p of parts) {
+      const entry = state.parts.get(p.id);
+      const li = el('li', 'row' + (entry.obj ? '' : ' unmodeled') + (p.id === state.selected ? ' sel' : ''));
+      li.append(el('span', null, p.name + ((p.quantity || 1) > 1 ? ` ×${p.quantity}` : '')));
+      li.append(el('span', 'num retail', money(p.retail?.price)));
+      const pr = el('span', 'prices');
+      pr.append(el('span', 'after', `Aftermarket ${range(p.aftermarket)}`));
+      if (!entry.obj) pr.append(` · ${p.visible === false ? 'hidden part' : 'not modeled'}`);
+      li.append(pr);
+      li.addEventListener('click', () => select(p.id));
+      li.addEventListener('pointerenter', () => hover(p.id, { detail: false }));
+      li.addEventListener('pointerleave', () => hover(null, { detail: false }));
+      ul.append(li);
+    }
+    det.append(ul); list.append(det);
+  }
+}
+
+function priceBlock(dl, title, o, valueText, cls) {
+  dl.append(el('dt', null, title));
+  const dd = el('dd');
+  dd.append(el('strong', cls, valueText));
+  if (o?.basis === 'estimate') dd.append(' ', el('span', 'badge', 'estimate'));
+  const src = [];
+  if (o?.source) src.push(o.source);
+  if (o?.checked_on) src.push(`checked ${o.checked_on}`);
+  if (src.length || o?.url) {
+    const line = el('div'); line.style.color = 'var(--muted)'; line.style.fontSize = '12px';
+    const url = o?.url && safeUrl(o.url);
+    if (url) { const a = el('a', null, src.join(' · ') || 'source'); a.href = url; a.target = '_blank'; a.rel = 'noopener noreferrer'; line.append(a); }
+    else line.textContent = src.join(' · ');
+    dd.append(line);
+  }
+  if (o?.note) { const n = el('div', null, o.note); n.style.color = 'var(--muted)'; n.style.fontSize = '12px'; dd.append(n); }
+  dl.append(dd);
+}
+
+function renderDetail(id) {
+  const box = $('detail'); box.replaceChildren(el('h2', null, 'Selected part'));
+  if (!id) { box.append(el('p', 'empty', 'Hover or click a part.')); return; }
+  const p = state.parts.get(id).data;
+  box.append(el('div', null, p.name)); box.lastChild.style.fontWeight = '600';
+  const dl = el('dl');
+  const kv = (k, v) => { dl.append(el('dt', null, k), el('dd', null, v)); };
+  kv('ID', p.id);
+  kv('OEM part #', p.oem_part_number || '—');
+  if ((p.quantity || 1) > 1) kv('Quantity', String(p.quantity));
+  priceBlock(dl, 'Retail (OEM)', p.retail, money(p.retail?.price), 'retail');
+  if (p.aftermarket) {
+    priceBlock(dl, 'Aftermarket', p.aftermarket, range(p.aftermarket), 'after');
+    kv('Grade', p.aftermarket.grade?.replaceAll('_', ' ') || '—');
+    kv('Brands', (p.aftermarket.brands || []).join(', ') || '—');
+    if (p.retail?.price) kv('Savings', `${Math.round((1 - p.aftermarket.high / p.retail.price) * 100)}–${Math.round((1 - p.aftermarket.low / p.retail.price) * 100)}% vs retail`);
+  } else {
+    kv('Aftermarket', `None: ${p.aftermarket_unavailable_reason || 'not available'}`);
+  }
+  if (p.fitment_note) kv('Fitment', p.fitment_note);
+  box.append(dl);
+}
+
+// ---------- interaction ----------
+function setHighlight(id, on) {
+  const entry = id && state.parts.get(id);
+  if (!entry?.obj) return;
+  entry.obj.traverse((o) => { if (o.isMesh && o.material.emissive) o.material.emissive.setHex(on ? 0x7a2a00 : 0x000000); });
+}
+// Only canvas hover updates the detail panel: list rows sit below it, and resizing the
+// panel while the pointer is over the list would make the list jump under the cursor.
+function hover(id, { detail = true } = {}) {
+  if (state.hovered === id) return;
+  if (state.hovered && state.hovered !== state.selected) setHighlight(state.hovered, false);
+  state.hovered = id;
+  if (id) setHighlight(id, true);
+  if (detail && !state.selected) renderDetail(id);
+  renderLabels();
+}
+function select(id) {
+  if (state.selected) setHighlight(state.selected, false);
+  state.selected = state.selected === id ? null : id;
+  if (state.selected) setHighlight(state.selected, true);
+  renderDetail(state.selected); renderLabels(); renderList();
+}
+
+const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+function pick(ev) {
+  if (!state.root) return null;
+  const r = renderer.domElement.getBoundingClientRect();
+  ndc.set(((ev.clientX - r.left) / r.width) * 2 - 1, -((ev.clientY - r.top) / r.height) * 2 + 1);
+  ray.setFromCamera(ndc, camera);
+  for (const hit of ray.intersectObject(state.root, true)) {
+    let o = hit.object; while (o && !o.userData.partId) o = o.parent;
+    if (o) return o.userData.partId;
+  }
+  return null;
+}
+const tip = $('tip');
+renderer.domElement.addEventListener('pointermove', (ev) => {
+  const id = pick(ev); hover(id);
+  if (!id) { tip.style.display = 'none'; return; }
+  const p = state.parts.get(id).data, r = stage.getBoundingClientRect();
+  tip.replaceChildren(el('strong', null, p.name), el('br'),
+    el('span', 'retail', `Retail ${money(p.retail?.price)}`), el('br'),
+    el('span', 'after', `Aftermarket ${range(p.aftermarket)}`));
+  tip.style.display = 'block';
+  tip.style.left = `${Math.min(ev.clientX - r.left + 14, r.width - 270)}px`;
+  tip.style.top = `${ev.clientY - r.top + 14}px`;
+});
+renderer.domElement.addEventListener('pointerleave', () => { hover(null); tip.style.display = 'none'; });
+let down = null;
+renderer.domElement.addEventListener('pointerdown', (ev) => { down = [ev.clientX, ev.clientY]; });
+renderer.domElement.addEventListener('pointerup', (ev) => {
+  if (down && Math.hypot(ev.clientX - down[0], ev.clientY - down[1]) < 5) { const id = pick(ev); if (id || state.selected) select(id ?? state.selected); }
+});
+$('labelMode').addEventListener('change', renderLabels);
+$('search').addEventListener('input', renderList);
+$('explode').addEventListener('input', (ev) => {
+  const k = +ev.target.value;
+  for (const entry of state.parts.values()) {
+    if (!entry.obj || !entry.rest) continue;
+    // The offset is in world space; convert it into the parent's space so nested parts move correctly.
+    const parent = entry.obj.parent;
+    const local = parent.worldToLocal(parent.getWorldPosition(new THREE.Vector3()).add(entry.explodeWorld.clone().multiplyScalar(k)));
+    entry.obj.position.copy(entry.rest).add(local);
+  }
+});
+
+// Drag and drop: one .glb/.gltf and one .json.
+stage.addEventListener('dragover', (e) => { e.preventDefault(); $('drop').classList.add('show'); });
+stage.addEventListener('drop', async (e) => {
+  e.preventDefault();
+  const files = [...e.dataTransfer.files];
+  const m = files.find((f) => /\.(glb|gltf)$/i.test(f.name)), c = files.find((f) => /\.json$/i.test(f.name));
+  if (!m || !c) { $('drop').textContent = 'Drop both the model (.glb) and the catalog (.json) together.'; return; }
+  try { await loadAll(URL.createObjectURL(m), JSON.parse(await c.text())); }
+  catch (err) { $('drop').textContent = `Could not load: ${err.message}`; }
+});
+
+(function loop() {
+  requestAnimationFrame(loop);
+  controls.update();
+  renderer.render(scene, camera);
+  labelRenderer.render(scene, camera);
+})();
+
+const qs = new URLSearchParams(location.search);
+loadAll(qs.get('model') || 'model.glb', qs.get('catalog') || 'catalog.json').catch((err) => {
+  $('vehicle').textContent = 'No model loaded';
+  $('drop').classList.add('show');
+  console.warn('Initial load failed:', err.message);
+});
+</script>
+</body>
+</html>

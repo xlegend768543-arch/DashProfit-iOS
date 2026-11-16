@@ -9,6 +9,11 @@
       "name": "callimachus-kit",
       "source": "./plugins/callimachus-kit",
       "description": "Everyday commands on top of Callimachus: why, preflight, seen-this, standup, wrap-up, spend."
+    },
+    {
+      "name": "car-parts-3d",
+      "source": "./plugins/car-parts-3d",
+      "description": "3D car models with every part labeled and priced at OEM retail and aftermarket: catalog, Blender scripts, viewer."
     }
   ]
 }

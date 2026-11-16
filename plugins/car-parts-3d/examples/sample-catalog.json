@@ -1,0 +1,837 @@
+{
+  "schema_version": "1.0",
+  "vehicle": {
+    "year": 2020,
+    "make": "Example",
+    "model": "Compact Sedan",
+    "trim": "Base",
+    "body": "4-door sedan",
+    "engine": "2.0L I4",
+    "market": "US",
+    "vin": null
+  },
+  "currency": "USD",
+  "priced_on": "2026-11-16",
+  "parts": [
+    {
+      "id": "body_hood",
+      "name": "Hood panel",
+      "system": "body",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 520
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 150,
+        "high": 260,
+        "grade": "capa_certified",
+        "brands": [
+          "Example Aftermarket Co"
+        ]
+      }
+    },
+    {
+      "id": "body_roof",
+      "name": "Roof panel",
+      "system": "body",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 780
+      },
+      "aftermarket": null,
+      "aftermarket_unavailable_reason": "Roof skins are sold by the OEM only; no aftermarket panel is made"
+    },
+    {
+      "id": "body_trunk_lid",
+      "name": "Trunk lid",
+      "system": "body",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 610
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 180,
+        "high": 300,
+        "grade": "capa_certified",
+        "brands": [
+          "Example Aftermarket Co"
+        ]
+      }
+    },
+    {
+      "id": "body_bumper_front",
+      "name": "Front bumper cover",
+      "system": "body",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 450
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 90,
+        "high": 190,
+        "grade": "capa_certified",
+        "brands": [
+          "Example Aftermarket Co"
+        ]
+      }
+    },
+    {
+      "id": "body_bumper_rear",
+      "name": "Rear bumper cover",
+      "system": "body",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 420
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 85,
+        "high": 180,
+        "grade": "capa_certified",
+        "brands": [
+          "Example Aftermarket Co"
+        ]
+      }
+    },
+    {
+      "id": "body_grille",
+      "name": "Front grille",
+      "system": "body",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 230
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 45,
+        "high": 110,
+        "grade": "oe_equivalent",
+        "brands": [
+          "Example Aftermarket Co"
+        ]
+      }
+    },
+    {
+      "id": "body_fender_lh",
+      "name": "Front fender, left",
+      "system": "body",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 290
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 60,
+        "high": 130,
+        "grade": "capa_certified",
+        "brands": [
+          "Example Aftermarket Co"
+        ]
+      }
+    },
+    {
+      "id": "body_door_front_lh",
+      "name": "Front door shell, left",
+      "system": "body",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 1150
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 320,
+        "high": 520,
+        "grade": "oe_equivalent",
+        "brands": [
+          "Example Aftermarket Co"
+        ]
+      }
+    },
+    {
+      "id": "body_door_rear_lh",
+      "name": "Rear door shell, left",
+      "system": "body",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 1080
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 300,
+        "high": 500,
+        "grade": "oe_equivalent",
+        "brands": [
+          "Example Aftermarket Co"
+        ]
+      }
+    },
+    {
+      "id": "body_quarter_panel_lh",
+      "name": "Rear quarter panel, left",
+      "system": "body",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 690
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 160,
+        "high": 280,
+        "grade": "oe_equivalent",
+        "brands": [
+          "Example Aftermarket Co"
+        ]
+      }
+    },
+    {
+      "id": "body_mirror_lh",
+      "name": "Side mirror assembly, left",
+      "system": "body",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 340
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 55,
+        "high": 120,
+        "grade": "oe_equivalent",
+        "brands": [
+          "Example Aftermarket Co"
+        ]
+      }
+    },
+    {
+      "id": "lighting_headlamp_lh",
+      "name": "Headlamp assembly, left",
+      "system": "lighting",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 640
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 140,
+        "high": 280,
+        "grade": "oe_equivalent",
+        "brands": [
+          "Example Aftermarket Co"
+        ]
+      }
+    },
+    {
+      "id": "lighting_taillamp_lh",
+      "name": "Tail lamp assembly, left",
+      "system": "lighting",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 310
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 70,
+        "high": 150,
+        "grade": "oe_equivalent",
+        "brands": [
+          "Example Aftermarket Co"
+        ]
+      }
+    },
+    {
+      "id": "body_fender_rh",
+      "name": "Front fender, right",
+      "system": "body",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 290
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 60,
+        "high": 130,
+        "grade": "capa_certified",
+        "brands": [
+          "Example Aftermarket Co"
+        ]
+      }
+    },
+    {
+      "id": "body_door_front_rh",
+      "name": "Front door shell, right",
+      "system": "body",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 1150
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 320,
+        "high": 520,
+        "grade": "oe_equivalent",
+        "brands": [
+          "Example Aftermarket Co"
+        ]
+      }
+    },
+    {
+      "id": "body_door_rear_rh",
+      "name": "Rear door shell, right",
+      "system": "body",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 1080
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 300,
+        "high": 500,
+        "grade": "oe_equivalent",
+        "brands": [
+          "Example Aftermarket Co"
+        ]
+      }
+    },
+    {
+      "id": "body_quarter_panel_rh",
+      "name": "Rear quarter panel, right",
+      "system": "body",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 690
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 160,
+        "high": 280,
+        "grade": "oe_equivalent",
+        "brands": [
+          "Example Aftermarket Co"
+        ]
+      }
+    },
+    {
+      "id": "body_mirror_rh",
+      "name": "Side mirror assembly, right",
+      "system": "body",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 340
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 55,
+        "high": 120,
+        "grade": "oe_equivalent",
+        "brands": [
+          "Example Aftermarket Co"
+        ]
+      }
+    },
+    {
+      "id": "lighting_headlamp_rh",
+      "name": "Headlamp assembly, right",
+      "system": "lighting",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 640
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 140,
+        "high": 280,
+        "grade": "oe_equivalent",
+        "brands": [
+          "Example Aftermarket Co"
+        ]
+      }
+    },
+    {
+      "id": "lighting_taillamp_rh",
+      "name": "Tail lamp assembly, right",
+      "system": "lighting",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 310
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 70,
+        "high": 150,
+        "grade": "oe_equivalent",
+        "brands": [
+          "Example Aftermarket Co"
+        ]
+      }
+    },
+    {
+      "id": "glass_windshield",
+      "name": "Windshield",
+      "system": "glass",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 420
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 180,
+        "high": 290,
+        "grade": "oe_equivalent",
+        "brands": [
+          "Example Glass Co"
+        ]
+      }
+    },
+    {
+      "id": "glass_back_window",
+      "name": "Rear window glass",
+      "system": "glass",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 380
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 160,
+        "high": 260,
+        "grade": "oe_equivalent",
+        "brands": [
+          "Example Glass Co"
+        ]
+      }
+    },
+    {
+      "id": "wheels_wheel_fl",
+      "name": "Alloy wheel, front left",
+      "system": "wheels",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 420
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 110,
+        "high": 240,
+        "grade": "oe_equivalent",
+        "brands": [
+          "Example Wheel Co"
+        ]
+      }
+    },
+    {
+      "id": "wheels_tire_fl",
+      "name": "Tire 215/55R17, front left",
+      "system": "wheels",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 190
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 95,
+        "high": 210,
+        "grade": "oe_equivalent",
+        "brands": [
+          "Example Tire Co"
+        ]
+      }
+    },
+    {
+      "id": "brakes_rotor_fl",
+      "name": "Brake rotor, front left",
+      "system": "brakes",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 145
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 35,
+        "high": 90,
+        "grade": "oe_equivalent",
+        "brands": [
+          "Example Aftermarket Co"
+        ]
+      }
+    },
+    {
+      "id": "wheels_wheel_fr",
+      "name": "Alloy wheel, front right",
+      "system": "wheels",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 420
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 110,
+        "high": 240,
+        "grade": "oe_equivalent",
+        "brands": [
+          "Example Wheel Co"
+        ]
+      }
+    },
+    {
+      "id": "wheels_tire_fr",
+      "name": "Tire 215/55R17, front right",
+      "system": "wheels",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 190
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 95,
+        "high": 210,
+        "grade": "oe_equivalent",
+        "brands": [
+          "Example Tire Co"
+        ]
+      }
+    },
+    {
+      "id": "brakes_rotor_fr",
+      "name": "Brake rotor, front right",
+      "system": "brakes",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 145
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 35,
+        "high": 90,
+        "grade": "oe_equivalent",
+        "brands": [
+          "Example Aftermarket Co"
+        ]
+      }
+    },
+    {
+      "id": "wheels_wheel_rl",
+      "name": "Alloy wheel, rear left",
+      "system": "wheels",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 420
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 110,
+        "high": 240,
+        "grade": "oe_equivalent",
+        "brands": [
+          "Example Wheel Co"
+        ]
+      }
+    },
+    {
+      "id": "wheels_tire_rl",
+      "name": "Tire 215/55R17, rear left",
+      "system": "wheels",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 190
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 95,
+        "high": 210,
+        "grade": "oe_equivalent",
+        "brands": [
+          "Example Tire Co"
+        ]
+      }
+    },
+    {
+      "id": "brakes_rotor_rl",
+      "name": "Brake rotor, rear left",
+      "system": "brakes",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 145
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 35,
+        "high": 90,
+        "grade": "oe_equivalent",
+        "brands": [
+          "Example Aftermarket Co"
+        ]
+      }
+    },
+    {
+      "id": "wheels_wheel_rr",
+      "name": "Alloy wheel, rear right",
+      "system": "wheels",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 420
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 110,
+        "high": 240,
+        "grade": "oe_equivalent",
+        "brands": [
+          "Example Wheel Co"
+        ]
+      }
+    },
+    {
+      "id": "wheels_tire_rr",
+      "name": "Tire 215/55R17, rear right",
+      "system": "wheels",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 190
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 95,
+        "high": 210,
+        "grade": "oe_equivalent",
+        "brands": [
+          "Example Tire Co"
+        ]
+      }
+    },
+    {
+      "id": "brakes_rotor_rr",
+      "name": "Brake rotor, rear right",
+      "system": "brakes",
+      "quantity": 1,
+      "visible": true,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 145
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 35,
+        "high": 90,
+        "grade": "oe_equivalent",
+        "brands": [
+          "Example Aftermarket Co"
+        ]
+      }
+    },
+    {
+      "id": "engine_block",
+      "name": "Engine assembly (long block)",
+      "system": "engine",
+      "quantity": 1,
+      "visible": false,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 5200
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 2600,
+        "high": 3900,
+        "grade": "remanufactured",
+        "brands": [
+          "Example Aftermarket Co"
+        ]
+      }
+    },
+    {
+      "id": "cooling_radiator",
+      "name": "Radiator",
+      "system": "cooling",
+      "quantity": 1,
+      "visible": false,
+      "oem_part_number": null,
+      "retail": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "price": 410
+      },
+      "aftermarket": {
+        "basis": "estimate",
+        "note": "Illustrative example value for a generic compact sedan, not a quote",
+        "low": 95,
+        "high": 180,
+        "grade": "oe_equivalent",
+        "brands": [
+          "Example Aftermarket Co"
+        ]
+      }
+    }
+  ]
+}
